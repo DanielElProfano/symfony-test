@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %} 
+
+{% block content %}
+    <div class="b-pokemon__container">
+        {% for pokemon in pokemons %}
+            <div class="b-pokemon">
+                <p class="b-pokemon__list">{{pokemon.name}}</p>
+                <img class="b-pokemon__image" src="{{pokemon.image}}">
+                <p class="b-pokemon__type">{{pokemon.description}}</p>
+                <a href="{{ path('delete', {id : pokemon.id})}}">delete</a>
+                <a href="/pokemon_modify">modify</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+    
+{% for film in films %}
+
+    <h2 style="background-color: gray">{{ film.name }}</h2>
+    <a href = "/peliculas/{{ loop.index0 }}"><h3>{{ film.year }}</h3></a>
+    <p>{{ film.psinopsis}}</p>
+{% endfor %}
+{% endblock %}
+
+
