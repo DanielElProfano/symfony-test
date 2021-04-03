@@ -6,6 +6,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Pokemon;
 use App\Manager\PokemonManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +20,7 @@ class PokemonController extends AbstractController
      */
     public function add_pokemon(EntityManagerInterface $em, Request $request, PokemonManager $pokeManager): Response
     {
-        
+
         $pokemon = new Pokemon();
 
         $pokemon->setName($request->request->get('name'));
@@ -29,7 +31,7 @@ class PokemonController extends AbstractController
         $em->flush();
         $allPokemons = $pokeManager->getAllPokemons($em);
 
-        return $this->render('pokemon/showPokemonList.html.twig', ['pokemons'=>$allPokemons]);
+        return $this->render('pokemon/showPokemonList.html.twig', ['pokemons' => $allPokemons]);
     }
 
     /**
@@ -51,28 +53,37 @@ class PokemonController extends AbstractController
         $em->remove($pokemon);
         $em->flush();
         $allPokemons = $pokeManager->getAllPokemons($em);
-        return $this->render('pokemon/showPokemonList.html.twig', ['pokemons'=>$allPokemons]);
-
+        return $this->render('pokemon/showPokemonList.html.twig', ['pokemons' => $allPokemons]);
     }
 
     /**
      * @Route("/pokemon_list", name="pokemon_list")
      */
 
-    public function pokemonList (EntityManagerInterface $em, PokemonManager $pokeManager)
-     {
-        $allPokemons = $pokeManager->getAllPokemons($em);
-        return $this->render('pokemon/showPokemonList.html.twig', ['pokemons' => $allPokemons]);
-     }
+    public function pokemonList(
+        EntityManagerInterface $em,
+        PokemonManager $pokeManager,
+        PaginatorInterface $paginator,
+        Request $request
+    ) {
+        $pagination = $paginator->paginate(
+            $pokeManager->getAllPokemons($em),
+            $request->query->getInt('page', 1),
+            5
+        );
 
-     /**
-      * @Route("/pokemon_modify/{id}", name="modify")
-      */
-    public function modifyPokemon ($id, EntityManagerInterface $em)
+
+        return $this->render('pokemon/showPokemonList.html.twig', ['pokemons' => $pagination]);
+    }
+
+    /**
+     * @Route("/pokemon_modify/{id}", name="modify")
+     */
+    public function modifyPokemon($id, EntityManagerInterface $em)
     {
         $repo = $em->getRepository(Pokemon::class);
         $pokemon = $repo->find($id);
-    return $this->render('pokemon/editPokemon.html.twig', ['pokemon' => $pokemon]);
+        return $this->render('pokemon/editPokemon.html.twig', ['pokemon' => $pokemon]);
     }
 
     /**
@@ -80,15 +91,17 @@ class PokemonController extends AbstractController
      */
     public function saveChanges(
         $id,
-        Request $request, 
-        EntityManagerInterface $em, 
-        PokemonManager $pokeManager)
-    {
+        Request $request,
+        EntityManagerInterface $em,
+        PokemonManager $pokeManager
+    ) {
         $repo = $em->getRepository(Pokemon::class);
         $pokemon = $repo->find($id);
         $pokemon->setDescription($request->request->get('description'));
         $pokemon->setName($request->request->get('name'));
-        $allPokemons = $pokeManager->getAllPokemons($em);
-        return $this->render('pokemon/showPokemonList.html.twig', ['pokemons' => $allPokemons]);
+        $em->flush();
+        return $this->pokemonList($em, $pokeManager);
+        // $allPokemons = $pokeManager->getAllPokemons($em);
+        //return $this->render('pokemon/showPokemonList.html.twig', ['pokemons' => $allPokemons]);
     }
 }

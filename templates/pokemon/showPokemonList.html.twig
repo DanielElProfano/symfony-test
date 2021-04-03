@@ -2,7 +2,9 @@
 
 {% block content %}
     <div class="b-pokemon__container">
+        Total: {{ pokemons.getTotalItemCount }}
         {% for pokemon in pokemons %}
+        asfgsfdg
             <div class="b-pokemon">
                 <p class="b-pokemon__list">{{pokemon.name}}</p>
                 <img class="b-pokemon__image" src="{{pokemon.image}}">
@@ -11,8 +13,12 @@
                 <a href={{ path('modify', {id : pokemon.id})}}">modify</a>
             </div>
         {% endfor %}
+        {{ knp_pagination_render(pokemons) }}
+
     </div>
+    <a href="/pokemonform">CREATE</a>
 {% endblock %}
+
 
 {% block modifyPokemon %}
 {% endblock %}

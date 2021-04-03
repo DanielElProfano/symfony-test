@@ -18,17 +18,17 @@ class Pokemon
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $image;
 

@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 namespace App\Manager;
 
 use App\Entity\Pokemon;
@@ -9,6 +10,7 @@ class PokemonManager
     public function getAllPokemons($em)
     {
         $repo = $em->getRepository(Pokemon::class);
-        return $repo->findAll();
+        $all = $repo->findAll();
+        return $all;
     }
 }
