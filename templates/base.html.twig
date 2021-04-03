@@ -2,12 +2,12 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Pokemon{% endblock %}</title>
         {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
         {% block stylesheets %}
             {#{{ encore_entry_link_tags('app') }}#}
-            <link rel="stylesheet" href="">
+            <link href="{{ asset('styles/main.css') }}" type="text/css" rel="stylesheet" />
         {% endblock %}
 
         {% block javascripts %}
@@ -15,7 +15,13 @@
         {% endblock %}
     </head>
     <body>
-        {% block header %} HEADER {% endblock %}
+        {% block header %} 
+        <div class="header">
+            
+            <img class="header__img" src="assets/img/pokeball.png">
+            <h2>Pokemon HMG</h2>
+        </div>
+        {% endblock %}
         {# {% if age >= 18 %}
             <p>{{ name }} eres mayor de edad </p>
         {% else %}

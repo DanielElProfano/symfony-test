@@ -1,0 +1,13 @@
+{% block modifyPokemon %}
+<div class="b-pokemon__container">
+  
+        <form method="POST" class="b-pokemon" action="/savechanges/{{pokemon.id}}">
+            <input class="b-pokemon__list" value="{{pokemon.name}}" name="name"></input>
+            <img class="b-pokemon__image" src="{{pokemon.image}}">
+            <input class="b-pokemon__type" value="{{pokemon.description}}" name="description"></input>
+            <button type="submit">Modify</button>
+        </form>
+
+</div>
+
+{% endblock %}

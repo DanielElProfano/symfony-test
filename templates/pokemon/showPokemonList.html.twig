@@ -8,8 +8,11 @@
                 <img class="b-pokemon__image" src="{{pokemon.image}}">
                 <p class="b-pokemon__type">{{pokemon.description}}</p>
                 <a href="{{ path('delete', {id : pokemon.id})}}">delete</a>
-                <a href="/pokemon_modify">modify</a>
+                <a href={{ path('modify', {id : pokemon.id})}}">modify</a>
             </div>
         {% endfor %}
     </div>
+{% endblock %}
+
+{% block modifyPokemon %}
 {% endblock %}

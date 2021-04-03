@@ -1,0 +1,26 @@
+.header{
+    display: flex;
+    align-items: center;
+    
+}
+.header__img{
+    width: 150px;
+    height: 150px;
+}
+
+
+.b-pokemon__container{
+    display:flex;
+    justify-content: center;
+    border: 1px solid black;
+}
+.b-pokemon__image{
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    object-position: center;
+}
+.b-pokemon__list{
+    font-size: 2rem;
+    text-align: center;
+}
