@@ -5,8 +5,8 @@ namespace App\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Pokemon;
 use App\Manager\PokemonManager;
+use Cloudinary\Cloudinary;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,13 +25,31 @@ class PokemonController extends AbstractController
 
         $pokemon->setName($request->request->get('name'));
         $pokemon->setDescription($request->request->get('type'));
-        $pokemon->setImage($request->request->get('image'));
+        $imageToUpload = $_FILES['imagen']['tmp_name'];
+        $url = $this->uploadToCloud($imageToUpload);
+        dd($url);
         $em->persist($pokemon);
 
         $em->flush();
         $allPokemons = $pokeManager->getAllPokemons($em);
 
         return $this->render('pokemon/showPokemonList.html.twig', ['pokemons' => $allPokemons]);
+    }
+
+    private function uploadToCloud($image)
+    {
+        $cloudinary = new Cloudinary([
+            'cloud' => [
+                'cloud_name' => 'dcn1tgjkh',
+                'api_key'    => '687241143766925',
+                'api_secret' => 'qiQvSAItRFGW-y10LRzC4fdlXQs',
+            ],
+        ]);
+        // $name = $image->tmp_name;
+
+        $hola = $cloudinary->uploadApi()->upload($image);
+
+        return $this->hola->storage->url;
     }
 
     /**
